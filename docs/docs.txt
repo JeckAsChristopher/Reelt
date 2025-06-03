@@ -1,0 +1,4 @@
+Reelt v0.1-prerealease
+
+What is Reelt?
+Reelt - Reverse engineering elf linux tool is a type of RE tool that inspect raw or binary machine code(human readable) this only targets elf and not any other exdcutables.

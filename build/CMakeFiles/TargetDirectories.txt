@@ -1,0 +1,12 @@
+/data/data/com.termux/files/home/Reelt/build/CMakeFiles/reelt.dir
+/data/data/com.termux/files/home/Reelt/build/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/Reelt/build/CMakeFiles/rebuild_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/CMakeFiles/rebuild_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/fuzz/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/fuzz/CMakeFiles/rebuild_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/src/CMakeFiles/CLI11.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/src/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/src/CMakeFiles/rebuild_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/single-include/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/Reelt/build/deps/CLI11/single-include/CMakeFiles/rebuild_cache.dir

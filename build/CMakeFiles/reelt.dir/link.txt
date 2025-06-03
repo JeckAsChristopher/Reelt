@@ -1,0 +1,1 @@
+/data/data/com.termux/files/usr/bin/c++ -O2 -g -DNDEBUG -Xlinker --dependency-file=CMakeFiles/reelt.dir/link.d CMakeFiles/reelt.dir/src/main.cpp.o CMakeFiles/reelt.dir/src/CLI.cpp.o CMakeFiles/reelt.dir/src/utils.cpp.o CMakeFiles/reelt.dir/src/elf_parser.cpp.o CMakeFiles/reelt.dir/src/disassembler.cpp.o -o reelt  -lcapstone
