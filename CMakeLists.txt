@@ -7,12 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(CAPSTONE REQUIRED capstone)
 
-add_subdirectory(deps/CLI11)
+add_subdirectory(libs/CLI11)
 
 include_directories(
     ${CAPSTONE_INCLUDE_DIRS}
-    deps/CLI11/include
-    deps/ELFIO
+    libs/CLI11/include
+    libs/ELFIO
     include
 )
 
