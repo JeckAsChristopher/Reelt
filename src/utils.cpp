@@ -1,3 +1,5 @@
+// LICENSE BY MIT 2025
+
 #include "include/utils.hpp"
 #include <sstream>
 #include <iomanip>

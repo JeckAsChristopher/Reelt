@@ -1,3 +1,5 @@
+// LICENSE BY MIT 2025
+
 #include <iostream>
 #include <string>
 #include <CLI/CLI.hpp>

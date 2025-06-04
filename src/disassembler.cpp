@@ -1,3 +1,5 @@
+// LICENSE BY MIT 2025
+
 #include "include/disassembler.hpp"
 #include "elfio/elfio.hpp"
 #include "elfio/elf_types.hpp"
@@ -35,7 +37,6 @@ void disassembleTextSection(const std::string& elf_path) {
     cs_insn* insn = nullptr;
     size_t count = 0;
 
-    // Determine mode based on ELF class
     cs_mode mode = (reader.get_class() == ELFIO::ELFCLASS64) ? CS_MODE_64 : CS_MODE_32;
 
     if (cs_open(CS_ARCH_X86, mode, &handle) != CS_ERR_OK) {

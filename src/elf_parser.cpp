@@ -1,3 +1,5 @@
+// LICENSE BY MIT 2025
+
 #include "include/elf_parser.hpp"
 #include <elfio/elfio.hpp>
 #include <iostream>
@@ -25,7 +27,6 @@ void displayELFHeaders() {
 }
 
 void displayELFSymbols() {
-    // Need non-const pointer for symbol_section_accessor
     ELFIO::section* sym_sec = reader.sections[".symtab"];
     if (!sym_sec) {
         std::cerr << "No symbol table found (.symtab)\n";
