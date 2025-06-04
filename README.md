@@ -21,7 +21,7 @@ Reelt is developed upon three foundational libraries:
 |-----------------|--------------------------------------------------------------------------|
 | **0.1-prerelease** | Minimal inspection only: headers, symbols, disassembly                   |
 | **0.2-prerelease** | Better build system, library handling in subdirectories                |
-| **0.3**             | Introduced experimental patching and editing capabilities                      |
+| **0.3**             | experimental patching and editing capabilities                      |
 
 ---
 
@@ -30,17 +30,18 @@ Reelt is developed upon three foundational libraries:
 ```bash
 ./xpriv --headers <file>     # Examine only ELF headers
 ```
-./xpriv --symbols <file>     # Display symbol table (assembly level)
-./xpriv --disasm <file>      # Disassemble binary (early phase)
-./reelt --headers --symbols --disasm <file>  # Integrated output
+./xpriv --symbols <file>
+./xpriv --disasm <file>
+./reelt --headers --symbols --disasm <file>
 
 ### Modes (Experimental)
 
 ```bash
-./reelt --rom <file>         # Read-only mode
-./reelt --em <file>          # Editor mode (experimental)
+./reelt --rom <file>
+./reelt --em <file>
 ```
-./reelt --pm <file>          # Patch mode (in development)
+```bash
+./reelt --pm <file>
 ```
 
 > These are **under development** modes and might not function as intended.
