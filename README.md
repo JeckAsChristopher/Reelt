@@ -48,10 +48,5 @@ make
 
 ---
 
-
-## This has built-in libraries so you don't need to install any libraries.
-
----
-
 # Notice!
 ### This project is still under active development!
