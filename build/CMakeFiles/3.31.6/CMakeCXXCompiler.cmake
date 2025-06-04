@@ -87,9 +87,9 @@ endif()
 
 
 
-set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "/data/data/com.termux/files/usr/include/c++/v1;/data/data/com.termux/files/usr/lib/clang/20/include;/data/data/com.termux/files/usr/include/aarch64-linux-android;/data/data/com.termux/files/usr/include")
+set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "/data/data/com.termux/files/home/.local/include;/data/data/com.termux/files/usr/include/c++/v1;/data/data/com.termux/files/usr/lib/clang/20/include;/data/data/com.termux/files/usr/include/aarch64-linux-android;/data/data/com.termux/files/usr/include")
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "c++_shared;-l:libunwind.a;dl;m;c;-l:libunwind.a;dl")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/data/data/com.termux/files/usr/lib;/system/lib64")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/data/data/com.termux/files/usr/lib;/system/lib64;/data/data/com.termux/files/home/.local/lib")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
 set(CMAKE_CXX_COMPILER_CLANG_RESOURCE_DIR "/data/data/com.termux/files/usr/lib/clang/20")
 
