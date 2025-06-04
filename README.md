@@ -30,9 +30,12 @@ Reelt is developed upon three foundational libraries:
 ```bash
 ./xpriv --headers <file>     # Examine only ELF headers
 ```
+
+```bash
 ./xpriv --symbols <file>
 ./xpriv --disasm <file>
 ./reelt --headers --symbols --disasm <file>
+```
 
 ### Modes (Experimental)
 
