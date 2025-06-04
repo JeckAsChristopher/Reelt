@@ -62,7 +62,7 @@ make
 > In the process of building, the tool may ask to install/update libraries.
 > Select `y` to continue. At least **500 to 700 MB** free space is needed.
 
-**Note:** Library updates are common. Reinstall every **2–3 days** to remain updated.
+**Note:** Library updates are common. Reinstall every **2 to 3 days** to remain updated.
 
 ---
 
