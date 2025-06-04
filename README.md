@@ -1,52 +1,75 @@
-# Reelt - Reverse Engineering Elf Linux Tool
+# Reelt - Reverse Engineering ELF Linux Tool
 
 [![License](https://img.shields.io/github/license/JeckAsChristopher/Reelt?style=flat-square)](https://github.com/JeckAsChristopher/Reelt/blob/main/LICENSE)
-![Pre-release](https://img.shields.io/badge/status-pre--release-yellow)
 
 ## What is Reelt?
-**Reelt** is where you can inspect **headers**, **symbols**, **disassemble**, and combine the options
-It uses 3 third-party tools such as **ELFIO, Capstone, and CLI**
-> Im working on the modification tool where you can modify the variables now
+
+**Reelt** is a pretty strong command line interface using which the reverse engineering of ELF (Executable and Linkable Format) files done on a Linux machine can be performed.
+It lets you view **headers**, **symbols**, and **disassembled code** with advanced **editing and patching** features still in the works.
+Reelt is developed upon three foundational libraries:
+- [**ELFIO**](https://github.com/serge1/ELFIO)
+- [**Capstone**](https://www.capstone-engine.org/)
+- **Custom CLI Parser**
+
+> Variable and memory modification functionality are **under development**.
 
 ---
 
-## Version
-**0.1-prerelease** - the features is only inspect you can't modify the assembly code.
-**0.2-prerelease** - Better compiling and libraries installation since Github make the libraries as a subdirectory.
+## Versions
+
+| Version         | Features                                                                 |
+|-----------------|--------------------------------------------------------------------------|
+| **0.1-prerelease** | Minimal inspection only: headers, symbols, disassembly                   |
+| **0.2-prerelease** | Better build system, library handling in subdirectories                |
+| **0.3**             | Introduced experimental patching and editing capabilities                      |
 
 ---
 
-## Usage
+## Features & Usage
 
-- **./xpriv --headers examplelf** - See only headers
+```bash
+./xpriv --headers <file>     # Examine only ELF headers
+```
+./xpriv --symbols <file>     # Display symbol table (assembly level)
+./xpriv --disasm <file>      # Disassemble binary (early phase)
+./reelt --headers --symbols --disasm <file>  # Integrated output
 
-- **./xpriv --symbols examplelf** - See only symbols from machine code(assembly)
+### Modes (Experimental)
 
-- **./xpriv --disasm examplelf** - See only disassembly code(doesn't do much from now.)
+```bash
+./reelt --rom <file>         # Read-only mode
+./reelt --em <file>          # Editor mode (experimental)
+```
+./reelt --pm <file>          # Patch mode (in development)
+```
 
-- **./reelt --headers --symbols --disasm examplelf** - Can see all such as **--headers, --symbols --disasm**.
+> These are **under development** modes and might not function as intended.
 
 ---
 
-## Clone Repository
+## Installation
 
 ```bash
 git clone https://github.com/JeckAsChristopher/Reelt
-
-# Or just Download it directly from the Website.
-```
-
----
-
-# Installation
-```bash
+cd Reelt
 make
 ```
-**It will prompt you to reinstall the libraries type `y` because when you clone the repository libraries is empty.**
-**You need at least 500-700 mb free storage to install the libraries**
-> Reinstall libraries every 2-3 days guaranteed there's an update.
+
+> In the process of building, the tool may ask to install/update libraries.
+> Select `y` to continue. At least **500–700 MB** free space is advisable.
+
+**Note:** Library updates are common. Reinstall every **2–3 days** to remain updated.
 
 ---
 
-# Notice!
-### This project is still under active development!
+## Disclaimer
+
+This project is in **active development**.
+Use at your own risk, and test on non-critical binaries.
+
+---
+
+## Contributions & Feedback
+
+Open issues, ask for features, or contribute through pull requests, as you wish.
+Together we can make **Reelt** the definitive tool for ELF reverse engineering on Linux!

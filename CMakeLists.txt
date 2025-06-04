@@ -22,6 +22,8 @@ add_executable(reelt
     src/utils.cpp
     src/elf_parser.cpp
     src/disassembler.cpp
+    src/editor.cpp
+    src/injector.cpp
 )
 
 target_link_libraries(reelt

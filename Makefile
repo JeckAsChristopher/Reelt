@@ -50,7 +50,7 @@ build: libs
 	@mkdir -p build
 	@echo -e "$(YELLOW)==> Running CMake configure...$(NC)"
 	@cd build && cmake ..
-	@echo -e "$(Green)==> Building Main Version: v0.2-prerelease."
+	@echo -e "$(Green)==> Building Main Version: v0.3"
 	@echo -e "$(YELLOW)==> Building project...$(NC)"
 	@cd build && cmake --build .
 	@echo -e "$(GREEN)==> Build completed successfully!$(NC)"
