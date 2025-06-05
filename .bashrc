@@ -1,0 +1,26 @@
+# PLEASE DO NOT MODIFY OR REMOVE THIS FILE!
+# THIS IS IMPORTANT FOR THE BUILD STRUCTURE
+
+LOCAL_LIB="$HOME/.local/lib"
+LOCAL_INCLUDE="$HOME/.local/include"
+LOCAL_PKGCONFIG="$LOCAL_LIB/pkgconfig"
+
+case ":$PKG_CONFIG_PATH:" in
+  *":$LOCAL_PKGCONFIG:"*) ;;
+  *) export PKG_CONFIG_PATH="$LOCAL_PKGCONFIG${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" ;;
+esac
+
+case ":$LD_LIBRARY_PATH:" in
+  *":$LOCAL_LIB:"*) ;;
+  *) export LD_LIBRARY_PATH="$LOCAL_LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ;;
+esac
+
+case ":$CPATH:" in
+  *":$LOCAL_INCLUDE:"*) ;;
+  *) export CPATH="$LOCAL_INCLUDE${CPATH:+:$CPATH}" ;;
+esac
+
+case ":$LIBRARY_PATH:" in
+  *":$LOCAL_LIB:"*) ;;
+  *) export LIBRARY_PATH="$LOCAL_LIB${LIBRARY_PATH:+:$LIBRARY_PATH}" ;;
+esac

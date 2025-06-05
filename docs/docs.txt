@@ -1,6 +1,6 @@
 Reelt v0.2 - Pre-release
 
- What is Reelt?
+What is Reelt?
 
 Reelt (Reverse Engineering ELF Linux Tool) is a reverse engineering tool built for analyzing ELF (Executable and Linkable Format) binaries on Linux systems.
 

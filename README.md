@@ -21,7 +21,8 @@ Reelt is developed upon three foundational libraries:
 |-----------------|--------------------------------------------------------------------------|
 | **0.1-prerelease** | Minimal inspection only: headers, symbols, disassembly                   |
 | **0.2-prerelease** | Better build system, library handling in subdirectories                |
-| **0.3**             | experimental patching and editing capabilities                      |
+| **0.3**         | experimental patching and editing capabilities                      |
+| **0.4**         | Optimize configuring and building. **Added new commamd --payload and --section**              |
 
 ---
 
@@ -45,6 +46,16 @@ Reelt is developed upon three foundational libraries:
 ```
 ```bash
 ./reelt --pm <file>
+```
+
+### Pretty useful commnads
+```bash
+./reelt --payload - verifying and checkingbchecksum on the elf and modifying checksum to not damage or corrupt the ELF
+
+./reelt --inj - injects payload using raw text .bin
+
+./reelt --section - use this if you have a target in elf files such as .text .rodata etc.
+
 ```
 
 > These are **under development** modes and might not function as intended.
@@ -77,3 +88,9 @@ Use at your own risk, and test on non-critical binaries.
 
 Open issues, ask for features, or contribute through pull requests, as you wish.
 Together we can make **Reelt** the definitive tool for ELF reverse engineering on Linux!
+
+---
+
+## Credits
+
+**Thanks to** *ELFIO, capstone, and CLI11* For helping me build this kind of tool!
