@@ -1,5 +1,4 @@
 // LICENSE BY MIT 2025
-
 #include <CLI/CLI.hpp>
 #include <iostream>
 #include "include/elf_parser.hpp"
@@ -19,10 +18,11 @@ int runCLI(int argc, char** argv) {
     bool patch_mode = false;
     bool patch_save = false;
     bool inj_mode = false;
+    bool force_mode = false;
 
     std::string change_comment;
 
-    std::string inject_section = ".text";          // default section
+    std::string inject_section = ".text";
     std::string payload_path;
 
     app.add_option("file", elf_path, "Path to ELF or .melf file")->required();
@@ -34,9 +34,9 @@ int runCLI(int argc, char** argv) {
     app.add_flag("--pm", patch_mode, "Patch mode (load .melf)");
     app.add_flag("--save", patch_save, "Save final patched ELF (use with --pm)");
     app.add_flag("--inj", inj_mode, "Inject code snippet into ELF");
+    app.add_flag("--force", force_mode, "Force execution (may overwrite sections or skip safety checks)");
     app.add_option("--change", change_comment, "Comment to embed in .melf (use with --em)");
 
-    // Injection-specific options
     app.add_option("--section", inject_section, "Section name to inject into (default: .text)");
     app.add_option("--payload", payload_path, "Path to binary payload file (required with --inj)");
 
@@ -76,7 +76,7 @@ int runCLI(int argc, char** argv) {
             return 1;
         }
         std::cout << "[*] Injecting code snippet into ELF...\n";
-        injectCodeSnippet(elf_path, inject_section, payload_path);
+        injectCodeSnippet(elf_path, inject_section, payload_path, force_mode);
         std::cout << "[+] Injection completed successfully.\n";
         return 0;
     }

@@ -1,11 +1,30 @@
-.PHONY: all build clean libs
+.PHONY: all build clean libs check_os
 
 GREEN  := \033[0;32m
 YELLOW := \033[1;33m
 RED    := \033[0;31m
 NC     := \033[0m
 
-all: build
+all: check_os build
+
+check_os:
+	@{ \
+		kernel=$$(uname -s); \
+		if [ "$$kernel" != "Linux" ]; then \
+			echo -e "$(RED)==> Sorry, this OS is not a Linux kernel. Support is limited.$(NC)"; \
+			exit 1; \
+		fi; \
+		distro="Unknown"; \
+		if [ -f /etc/os-release ]; then \
+			. /etc/os-release; \
+			distro=$${NAME:-"Unknown"}; \
+		elif [ -n "$$PREFIX" ] && [ -d "$$PREFIX/bin" ]; then \
+			distro="Termux (Android)"; \
+		elif [ "$$(uname -o 2>/dev/null)" = "Android" ]; then \
+			distro="Android"; \
+		fi; \
+		echo -e "$(GREEN)==> Building on Linux/$$distro$(NC)"; \
+	}
 
 libs:
 	@{ \

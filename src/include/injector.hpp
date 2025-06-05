@@ -5,6 +5,7 @@
 
 void injectCodeSnippet(const std::string& elf_path,
                        const std::string& section_name,
-                       const std::string& payload_path);
+                       const std::string& payload_path,
+bool force);
 
-#endif // INJECTOR_HPP
+#endif

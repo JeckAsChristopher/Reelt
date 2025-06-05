@@ -1,8 +1,8 @@
 // LICENSE BY MIT 2025
 #include <iostream>
 #include <string>
-#include <CLI/CLI.hpp>
 
+#include <CLI/CLI.hpp>
 #include "include/elf_parser.hpp"
 #include "include/disassembler.hpp"
 #include "include/editor.hpp"
@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
     bool patch_mode = false;
     bool patch_save = false;
     bool inj_mode = false;
+    bool force_mode = false;
+
     std::string change_comment;
     std::string section_name;
     std::string payload_path;
@@ -41,6 +43,8 @@ int main(int argc, char** argv) {
     app.add_flag("--pm", patch_mode, "Patch mode (apply .melf)");
     app.add_flag("--save", patch_save, "Save patched ELF (use with --pm)");
     app.add_flag("--inj", inj_mode, "Inject code into ELF (requires --section and --payload)");
+    app.add_flag("--force", force_mode, "Force override any warnings or prompts");
+
     app.add_option("--change", change_comment, "Comment to embed in .melf (required with --em)");
     app.add_option("--section", section_name, "Section name to inject into (e.g. .rodata)");
     app.add_option("--payload", payload_path, "Path to payload binary file for injection");
@@ -55,40 +59,45 @@ int main(int argc, char** argv) {
     }
 
     if (edit_mode) {
-        if (change_comment.empty()) {
-            std::cerr << RED "[Error] --change is required in --em mode.\n" RESET;
+        if (change_comment.empty() && !force_mode) {
+            std::cerr << RED "[Error] --change is required in --em mode. Use --force to override.\n" RESET;
             return 1;
         }
         std::cout << YELLOW "[*] Editor mode enabled.\n" RESET;
-        editAndSave(elf_path, change_comment);
-        std::cout << GREEN "[+] .melf file generated successfully.\n" RESET;
+        editAndSave(elf_path, change_comment.empty() ? "[NO COMMENT - FORCED]" : change_comment);
+        std::cout << GREEN ".melf file generated successfully.\n" RESET;
         return 0;
     }
 
     if (patch_mode) {
-        if (!patch_save) {
-            std::cerr << RED "[Error] --save is required in --pm mode.\n" RESET;
+        if (!patch_save && !force_mode) {
+            std::cerr << RED "[Error] --save is required in --pm mode. Use --force to override.\n" RESET;
             return 1;
         }
         std::cout << YELLOW "[*] Applying patch from .melf...\n" RESET;
         applyPatch(elf_path);
-        std::cout << GREEN "[+] ELF patched and saved successfully.\n" RESET;
+        std::cout << GREEN "ELF patched and saved successfully.\n" RESET;
         return 0;
     }
 
     if (inj_mode) {
-        if (section_name.empty() || payload_path.empty()) {
-            std::cerr << RED "[Error] --section and --payload are required in --inj mode.\n" RESET;
+        if ((section_name.empty() || payload_path.empty()) && !force_mode) {
+            std::cerr << RED "[Error] --section and --payload are required in --inj mode. Use --force to override.\n" RESET;
             return 1;
         }
         std::cout << YELLOW "[*] Injection mode enabled. Modifying ELF...\n" RESET;
-        injectCodeSnippet(elf_path, section_name, payload_path);
-        std::cout << GREEN "[+] Code injection completed.\n" RESET;
+        injectCodeSnippet(
+            elf_path,
+            section_name.empty() ? ".force" : section_name,
+            payload_path.empty() ? "/dev/null" : payload_path,
+            false
+        );
+        std::cout << GREEN "Code injection completed.\n" RESET;
         return 0;
     }
 
     if (!loadELF(elf_path)) {
-        std::cerr << RED "[-] Failed to load ELF file: " << elf_path << "\n" RESET;
+        std::cerr << RED "Failed to load ELF file: " << elf_path << "\n" RESET;
         return 1;
     }
 
@@ -107,6 +116,6 @@ int main(int argc, char** argv) {
         disassembleTextSection(elf_path);
     }
 
-    std::cout << GREEN "[✓] Operation completed.\n" RESET;
+    std::cout << GREEN "Operation completed.\n" RESET;
     return 0;
 }
