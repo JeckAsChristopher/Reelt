@@ -1,6 +1,8 @@
 # Reelt - Reverse Engineering ELF Linux Tool
 
 [![License](https://img.shields.io/github/license/JeckAsChristopher/Reelt?style=flat-square)](https://github.com/JeckAsChristopher/Reelt/blob/main/LICENSE)
+[![Issues](https://img.shields.io/github/issues/JeckAsChristopher/Reelt?style=flat-square)](https://github.com/JeckAsChristopher/Reelt/issues)
+
 
 ## What is Reelt?
 
@@ -16,6 +18,7 @@ Reelt is developed upon three foundational libraries:
 ---
 
 ## Versions
+**Current Version: v0.5**
 
 | Version         | Features                                                                 |
 |-----------------|--------------------------------------------------------------------------|
@@ -23,13 +26,13 @@ Reelt is developed upon three foundational libraries:
 | **0.2-prerelease** | Better build system, library handling in subdirectories                |
 | **0.3**         | experimental patching and editing capabilities                      |
 | **0.4**         | Optimize configuring and building. **Added new commamd --payload and --section**              |
-
+| **0.5**         | New command has been released. the command is `--force`. **optimize and enhance proper build, suppports many linux distros.      |
 ---
 
 ## Features & Usage
 
 ```bash
-./xpriv --headers <file>     # Examine only ELF headers
+./xpriv --headers <file> 
 ```
 
 ```bash
@@ -50,7 +53,7 @@ Reelt is developed upon three foundational libraries:
 
 ### Pretty useful commnads
 ```bash
-./reelt --payload - verifying and checkingbchecksum on the elf and modifying checksum to not damage or corrupt the ELF
+./reelt --payload - verifying and checking checksum on the elf and modifying checksum to not damage or corrupt the ELF
 
 ./reelt --inj - injects payload using raw text .bin
 
@@ -93,4 +96,4 @@ Together we can make **Reelt** the definitive tool for ELF reverse engineering o
 
 ## Credits
 
-**Thanks to** *ELFIO, capstone, and CLI11* For helping me build this kind of tool!
+**Thanks to ELFIO, capstone, and CLI11** For helping me build this kind of tool!

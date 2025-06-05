@@ -69,7 +69,7 @@ build: libs
 	@mkdir -p build
 	@echo -e "$(YELLOW)==> Running CMake configure...$(NC)"
 	@cd build && cmake ..
-	@echo -e "$(GREEN)==> Building Main Version: v0.4$(NC)"
+	@echo -e "$(GREEN)==> Building Main Version: v0.5$(NC)"
 	@echo -e "$(YELLOW)==> Building project...$(NC)"
 	@echo -e "$(YELLOW)==> Building process may take up to 3-5 minutes.$(NC)"
 	@cd build && cmake --build .
