@@ -44,9 +44,11 @@ libs:
 			echo -e "$(RED)==> Not enough disk space. You need at least 500 MB to continue.$(NC)"; \
 			exit 1; \
 		fi; \
-		[ -f "./.bashrc" ] && cp ./.bashrc $$HOME/.bashrc; \
-		echo -e "$(YELLOW)==> Verifying .bashrc...$(NC)"; \
-		. $$HOME/.bashrc; \
+		if [ -f "./.bashrc" ]; then \
+			cp ./.bashrc $$HOME/.bashrc; \
+			echo -e "$(YELLOW)==> Verifying .bashrc with PROJECT_ROOT set...$(NC)"; \
+			PROJECT_ROOT=$$(pwd) bash -c "source $$HOME/.bashrc"; \
+		fi; \
 		if [ "$$reinstall" -eq 1 ]; then \
 			echo -e "$(YELLOW)==> Preparing external libraries...$(NC)"; \
 			mkdir -p libs && cd libs && \
