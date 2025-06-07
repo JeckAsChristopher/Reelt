@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(Reelt
-    VERSION 0.1
+    VERSION 0.6
     DESCRIPTION "Reelt: Binary ELF Injector/Editor with Capstone"
     LANGUAGES CXX
 )
@@ -9,23 +9,24 @@ project(Reelt
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 message(STATUS "Host OS: ${CMAKE_SYSTEM_NAME}")
 message(STATUS "C++ Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(CAPSTONE REQUIRED capstone)
-
-if(NOT CAPSTONE_FOUND)
-    message(FATAL_ERROR "Capstone library not found. Install it using your package manager (e.g., sudo apt install libcapstone-dev)")
-endif()
-
 add_subdirectory(libs/CLI11)
 
+set(CAPSTONE_SRC_DIR "${PROJECT_SOURCE_DIR}/libs/capstone")
+set(CAPSTONE_BUILD_DIR "${CAPSTONE_SRC_DIR}/build")
+set(CAPSTONE_INCLUDE_DIR "${CAPSTONE_SRC_DIR}/include")
+set(CAPSTONE_LIBRARY "${CAPSTONE_BUILD_DIR}/libcapstone.a")  # Static build
+
+if(NOT EXISTS ${CAPSTONE_LIBRARY})
+    message(FATAL_ERROR "Capstone static library not found at ${CAPSTONE_LIBRARY}. Build it with CMake in libs/capstone.")
+endif()
+
 include_directories(
-    ${CAPSTONE_INCLUDE_DIRS}
+    ${CAPSTONE_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/libs/CLI11/include
     ${PROJECT_SOURCE_DIR}/libs/ELFIO
     ${PROJECT_SOURCE_DIR}/include
@@ -44,12 +45,12 @@ set(SOURCES
 add_executable(reelt ${SOURCES})
 
 target_link_libraries(reelt
-    ${CAPSTONE_LIBRARIES}
+    ${CAPSTONE_LIBRARY}
     CLI11::CLI11
 )
 
 target_include_directories(reelt PRIVATE
-    ${CAPSTONE_INCLUDE_DIRS}
+    ${CAPSTONE_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/libs/CLI11/include
     ${PROJECT_SOURCE_DIR}/libs/ELFIO
     ${PROJECT_SOURCE_DIR}/include

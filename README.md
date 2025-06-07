@@ -18,7 +18,7 @@ Reelt is developed upon three foundational libraries:
 ---
 
 ## Versions
-**Current Version: v0.5**
+**Current Version: v0.6**
 
 | Version         | Features                                                                 |
 |-----------------|--------------------------------------------------------------------------|
@@ -27,6 +27,9 @@ Reelt is developed upon three foundational libraries:
 | **0.3**         | experimental patching and editing capabilities                      |
 | **0.4**         | Optimize configuring and building. **Added new commamd --payload and --section**              |
 | **0.5**         | New command has been released. the command is `--force`. **optimize and enhance proper build, suppports many linux distros.      |
+| **0.6**         | Fix compilation error(sorry for the incovinience that you all has an error during compilation.) Instead of exporting it on HOME i've decided to make it better.   |
+
+
 ---
 
 ## Features & Usage
