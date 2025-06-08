@@ -1,18 +1,23 @@
 // LICENSE BY MIT 2025
 
 #include "include/disassembler.hpp"
-#include "elfio/elfio.hpp"
-#include "elfio/elf_types.hpp"
+
+#include <elfio/elfio.hpp>
+#include <elfio/elf_types.hpp>
+
 #include <capstone/capstone.h>
 
 #include <iostream>
 #include <cstdio>
 #include <cinttypes>
 
+namespace elfutil {
+
 void disassembleTextSection(const std::string& elf_path) {
     ELFIO::elfio reader;
+
     if (!reader.load(elf_path)) {
-        std::cerr << "Failed to load ELF file\n";
+        std::cerr << "[Error] Failed to load ELF file: " << elf_path << '\n';
         return;
     }
 
@@ -25,34 +30,40 @@ void disassembleTextSection(const std::string& elf_path) {
     }
 
     if (!text_sec) {
-        std::cerr << "No .text section found\n";
+        std::cerr << "[Error] .text section not found in ELF\n";
         return;
     }
 
-    const uint8_t* code = reinterpret_cast<const uint8_t*>(text_sec->get_data());
-    size_t code_size = text_sec->get_size();
-    uint64_t addr = text_sec->get_address();
+    const uint8_t* code     = reinterpret_cast<const uint8_t*>(text_sec->get_data());
+    size_t         codeSize = text_sec->get_size();
+    uint64_t       addr     = text_sec->get_address();
 
     csh handle;
     cs_insn* insn = nullptr;
-    size_t count = 0;
+    cs_mode mode  = (reader.get_class() == ELFIO::ELFCLASS64) ? CS_MODE_64 : CS_MODE_32;
 
-    cs_mode mode = (reader.get_class() == ELFIO::ELFCLASS64) ? CS_MODE_64 : CS_MODE_32;
-
-    if (cs_open(CS_ARCH_X86, mode, &handle) != CS_ERR_OK) {
-        std::cerr << "Failed to initialize Capstone\n";
+    cs_err err = cs_open(CS_ARCH_X86, mode, &handle);
+    if (err != CS_ERR_OK) {
+        std::cerr << "[Capstone Error] " << cs_strerror(err) << '\n';
         return;
     }
 
-    count = cs_disasm(handle, code, code_size, addr, 0, &insn);
+    cs_option(handle, CS_OPT_DETAIL, CS_OPT_OFF);
+
+    size_t count = cs_disasm(handle, code, codeSize, addr, 0, &insn);
     if (count > 0) {
-        for (size_t i = 0; i < count; i++) {
-            std::printf("0x%" PRIx64 ": %-10s %s\n", insn[i].address, insn[i].mnemonic, insn[i].op_str);
+        for (size_t i = 0; i < count; ++i) {
+            std::printf("0x%" PRIx64 ": %-10s %s\n", 
+                        insn[i].address, 
+                        insn[i].mnemonic, 
+                        insn[i].op_str);
         }
         cs_free(insn, count);
     } else {
-        std::cerr << "Disassembly failed\n";
+        std::cerr << "[Error] Failed to disassemble code in .text section\n";
     }
 
     cs_close(&handle);
+}
+
 }

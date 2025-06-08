@@ -1,14 +1,17 @@
 .PHONY: all build clean libs check_os
 
-GREEN  := \033[0;32m
-YELLOW := \033[1;33m
-RED    := \033[0;31m
-NC     := \033[0m
+SHELL   := /bin/bash
+
+# Terminal colors
+GREEN   := \033[0;32m
+YELLOW  := \033[1;33m
+RED     := \033[0;31m
+NC      := \033[0m
 
 all: check_os build
 
 check_os:
-	@{ \
+	@bash -c '\
 	kernel=$$(uname -s); \
 	if [ "$$kernel" != "Linux" ]; then \
 		echo -e "$(RED)==> Sorry, this OS is not a Linux kernel. Support is limited.$(NC)"; \
@@ -24,10 +27,10 @@ check_os:
 		distro="Android"; \
 	fi; \
 	echo -e "$(GREEN)==> Building on Linux/$$distro$(NC)"; \
-}
+	'
 
 libs:
-	@{ \
+	@bash -c '\
 	empty=0; \
 	for lib in CLI11 capstone ELFIO; do \
 		if [ ! -d "libs/$$lib" ] || [ -z "$$(ls -A libs/$$lib 2>/dev/null)" ]; then \
@@ -35,7 +38,7 @@ libs:
 		fi; \
 	done; \
 	if [ "$$empty" -eq 1 ]; then \
-		echo -e "$(RED)==> Libraries aren't initialized or empty.$(NC)"; \
+		echo -e "$(RED)==> Libraries aren'\''t initialized or empty.$(NC)"; \
 		read -p "==> Do you want to reinstall again? (y/n): " ans; \
 		if [ "$$ans" = "y" ]; then \
 			echo -e "$(YELLOW)==> Cleaning up invalid libraries...$(NC)"; \
@@ -55,7 +58,7 @@ libs:
 		[ "$$ans" != "y" ] && { echo -e "$(GREEN)==> Skipping library installation.$(NC)"; exit 0; }; \
 		reinstall=1; \
 	fi; \
-	available_space=$$(df . | awk 'NR==2 {print $$4}'); \
+	available_space=$$(df . | awk '\''NR==2 {print $$4}'\''); \
 	required_kb=512000; \
 	if [ "$$available_space" -lt "$$required_kb" ]; then \
 		echo -e "$(RED)==> Not enough disk space. You need at least 500 MB to continue.$(NC)"; \
@@ -81,14 +84,14 @@ libs:
 		cmake .. && cmake --build .; \
 		echo -e "$(GREEN)==> Libraries ready!$(NC)"; \
 	fi; \
-}
+	'
 
 build: libs
 	@echo -e "$(YELLOW)==> Creating build directory...$(NC)"
 	@mkdir -p build
 	@echo -e "$(YELLOW)==> Running CMake configure...$(NC)"
 	@cd build && cmake ..
-	@echo -e "$(GREEN)==> Building Main Version: v0.6$(NC)"
+	@echo -e "$(GREEN)==> Building Main Version: v0.7$(NC)"
 	@echo -e "$(YELLOW)==> Building project...$(NC)"
 	@echo -e "$(YELLOW)==> Building process may take up to 3-5 minutes.$(NC)"
 	@cd build && cmake --build .

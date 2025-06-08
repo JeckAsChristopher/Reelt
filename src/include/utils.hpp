@@ -1,9 +1,11 @@
-#ifndef REELT_UTILS_HPP
-#define REELT_UTILS_HPP
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <string>
+#include <cstdint>
 
-std::string toHex(uint64_t val, bool prefix = true);
+std::string toHex(uint64_t val, bool prefix = false);
 std::string getSectionType(uint32_t type);
+std::string getSectionFlags(uint64_t flags);
 
-#endif // REELT_UTILS_HPP
+#endif // UTILS_HPP

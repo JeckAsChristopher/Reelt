@@ -1,12 +1,14 @@
 // LICENSE BY MIT 2025
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 #include <CLI/CLI.hpp>
 #include "include/elf_parser.hpp"
 #include "include/disassembler.hpp"
 #include "include/editor.hpp"
 #include "include/injector.hpp"
+#include "include/version.hpp"
 
 // ANSI color macros
 #define RED     "\033[31m"
@@ -17,6 +19,10 @@
 #define RESET   "\033[0m"
 
 int main(int argc, char** argv) {
+    if (geteuid() == 0) {
+        std::cout << BOLD RED "You're on sudo mode. Please use the software at your own risk.\n" RESET;
+    }
+
     CLI::App app{CYAN "Reelt - Reverse Engineering ELF Linux Tool" RESET};
 
     std::string elf_path;
@@ -29,12 +35,15 @@ int main(int argc, char** argv) {
     bool patch_save = false;
     bool inj_mode = false;
     bool force_mode = false;
+    bool show_version = false;
 
     std::string change_comment;
     std::string section_name;
     std::string payload_path;
 
-    app.add_option("file", elf_path, "Path to ELF or .melf file")->required();
+    app.add_flag("--version", show_version, "Show version and exit");
+
+    app.add_option("file", elf_path, "Path to ELF or .melf file");
     app.add_flag("--headers", show_headers, "Show ELF headers");
     app.add_flag("--symbols", show_symbols, "Show symbol table");
     app.add_flag("--disasm", disasm, "Disassemble .text section");
@@ -49,21 +58,34 @@ int main(int argc, char** argv) {
     app.add_option("--section", section_name, "Section name to inject into (e.g. .rodata)");
     app.add_option("--payload", payload_path, "Path to payload binary file for injection");
 
-    app.allow_extras();
     CLI11_PARSE(app, argc, argv);
 
+    if (show_version) {
+        if (!verifyVersionIntegrity()) {
+            std::cerr << RED "WARNING: Version integrity check failed. Binary may be tampered.\n" RESET;
+        } else {
+            std::cout << CYAN << "Reelt Version: " << getSecureVersion() << RESET << "\n";
+        }
+        return 0;
+    }
+
+    if (elf_path.empty()) {
+        std::cerr << RED "Error: No ELF file specified. Use --help for usage.\n" RESET;
+        return 1;
+    }
+
     if (rom_mode) {
-        std::cout << YELLOW "[*] Read-only disassembly mode enabled.\n" RESET;
+        std::cout << YELLOW "Read-only disassembly mode enabled.\n" RESET;
         readOnlyDisassemble(elf_path);
         return 0;
     }
 
     if (edit_mode) {
         if (change_comment.empty() && !force_mode) {
-            std::cerr << RED "[Error] --change is required in --em mode. Use --force to override.\n" RESET;
+            std::cerr << RED "Error: --change is required in --em mode. Use --force to override.\n" RESET;
             return 1;
         }
-        std::cout << YELLOW "[*] Editor mode enabled.\n" RESET;
+        std::cout << YELLOW "Editor mode enabled.\n" RESET;
         editAndSave(elf_path, change_comment.empty() ? "[NO COMMENT - FORCED]" : change_comment);
         std::cout << GREEN ".melf file generated successfully.\n" RESET;
         return 0;
@@ -71,10 +93,10 @@ int main(int argc, char** argv) {
 
     if (patch_mode) {
         if (!patch_save && !force_mode) {
-            std::cerr << RED "[Error] --save is required in --pm mode. Use --force to override.\n" RESET;
+            std::cerr << RED "Error: --save is required in --pm mode. Use --force to override.\n" RESET;
             return 1;
         }
-        std::cout << YELLOW "[*] Applying patch from .melf...\n" RESET;
+        std::cout << YELLOW "Applying patch from .melf...\n" RESET;
         applyPatch(elf_path);
         std::cout << GREEN "ELF patched and saved successfully.\n" RESET;
         return 0;
@@ -82,10 +104,10 @@ int main(int argc, char** argv) {
 
     if (inj_mode) {
         if ((section_name.empty() || payload_path.empty()) && !force_mode) {
-            std::cerr << RED "[Error] --section and --payload are required in --inj mode. Use --force to override.\n" RESET;
+            std::cerr << RED "Error: --section and --payload are required in --inj mode. Use --force to override.\n" RESET;
             return 1;
         }
-        std::cout << YELLOW "[*] Injection mode enabled. Modifying ELF...\n" RESET;
+        std::cout << YELLOW "Injection mode enabled. Modifying ELF...\n" RESET;
         injectCodeSnippet(
             elf_path,
             section_name.empty() ? ".force" : section_name,
@@ -96,24 +118,24 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    if (!loadELF(elf_path)) {
+    if (!elfutil::loadELF(elf_path)) {
         std::cerr << RED "Failed to load ELF file: " << elf_path << "\n" RESET;
         return 1;
     }
 
     if (show_headers) {
-        std::cout << CYAN "[*] Displaying ELF headers...\n" RESET;
-        displayELFHeaders();
+        std::cout << CYAN "Displaying ELF headers...\n" RESET;
+        elfutil::displayELFHeaders();
     }
 
     if (show_symbols) {
-        std::cout << CYAN "[*] Displaying ELF symbol table...\n" RESET;
-        displayELFSymbols();
+        std::cout << CYAN "Displaying ELF symbol table...\n" RESET;
+        elfutil::displayELFSymbols();
     }
 
     if (disasm) {
-        std::cout << CYAN "[*] Disassembling .text section...\n" RESET;
-        disassembleTextSection(elf_path);
+        std::cout << CYAN "Disassembling .text section...\n" RESET;
+        elfutil::disassembleTextSection(elf_path);
     }
 
     std::cout << GREEN "Operation completed.\n" RESET;

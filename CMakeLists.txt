@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(Reelt
-    VERSION 0.6
-    DESCRIPTION "Reelt: Binary ELF Injector/Editor with Capstone"
+    VERSION 0.7
+    DESCRIPTION "Reelt: Binary ELF Reverse Engineering tool"
     LANGUAGES CXX
 )
 
@@ -19,11 +19,13 @@ add_subdirectory(libs/CLI11)
 set(CAPSTONE_SRC_DIR "${PROJECT_SOURCE_DIR}/libs/capstone")
 set(CAPSTONE_BUILD_DIR "${CAPSTONE_SRC_DIR}/build")
 set(CAPSTONE_INCLUDE_DIR "${CAPSTONE_SRC_DIR}/include")
-set(CAPSTONE_LIBRARY "${CAPSTONE_BUILD_DIR}/libcapstone.a")  # Static build
+set(CAPSTONE_LIBRARY "${CAPSTONE_BUILD_DIR}/libcapstone.a")
 
 if(NOT EXISTS ${CAPSTONE_LIBRARY})
     message(FATAL_ERROR "Capstone static library not found at ${CAPSTONE_LIBRARY}. Build it with CMake in libs/capstone.")
 endif()
+
+find_package(OpenSSL REQUIRED)
 
 include_directories(
     ${CAPSTONE_INCLUDE_DIR}
@@ -40,6 +42,7 @@ set(SOURCES
     src/disassembler.cpp
     src/editor.cpp
     src/injector.cpp
+    src/version.cpp
 )
 
 add_executable(reelt ${SOURCES})
@@ -47,6 +50,7 @@ add_executable(reelt ${SOURCES})
 target_link_libraries(reelt
     ${CAPSTONE_LIBRARY}
     CLI11::CLI11
+    OpenSSL::Crypto
 )
 
 target_include_directories(reelt PRIVATE
